@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         const Divider(height: 30),
                         _buildProfileRow(
-                          label: 'Email',
+                          label: 'Emailo',
                           value:
                               _showEmail ? sso.user.email! : '******@****.***',
                           onTap: () {
