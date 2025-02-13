@@ -82,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         const SizedBox(height: 10),
                         _buildProfileRow(
-                          label: 'NIK (Nomor KTPuis)',
+                          label: 'NIK (Nomor KTPuisppp)',
                           value:
                               _showNik ? sso.user.nik! : '**** **** **** ****',
                           onTap: () {
