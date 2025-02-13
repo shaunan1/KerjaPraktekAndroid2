@@ -57,35 +57,152 @@ class EsuketSkdomListScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.center, // Mengatur teks di tengah
-                  children: [
-                    Center(
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                          height: 1.2,
-                          color: Theme.of(context).colorScheme.primary,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.center, // Mengatur teks di tengah
+                    children: [
+                      Center(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            height: 1.2,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center, // Teks di tengah
                       ),
-                    ),
-                    const SizedBox(height: 7),
-                    Center(
-                      child: Text(
-                        'Layanan $title',
-                        style: const TextStyle(fontWeight: FontWeight.w300),
-                        textAlign: TextAlign.center, // Teks di tengah
+                      const SizedBox(height: 7),
+                      Center(
+                        child: Text(
+                          'Layanan $title',
+                          style: const TextStyle(fontWeight: FontWeight.w300),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                      const SizedBox(
+                          height: 16), // Spasi tambahan sebelum kotak deskripsi
+
+                      // Box Deskripsi
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              spreadRadius: 2,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Center(
+                              child: Text(
+                                'DESKRIPSI',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Surat Keterangan Belum Menikah Adalah Surat Yang Menerangkan Belum Pernah Menikah Alias Berstatus Lajang. '
+                              'Pada Umumnya, Surat Ini Dibuat Sebagai Persyaratan Melamar Pekerjaan, Mengurus Pernikahan, Pengajuan Beasiswa, '
+                              'Urusan Kampus, Maupun Keperluan Atau Perjanjian Tertentu.',
+                              style: TextStyle(height: 1.5),
+                            ),
+                            const SizedBox(height: 12),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  'Output   : ',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                      'Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  'Masa Berlaku   : ',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('5 Tahun'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(
+                          height:
+                              16), // Spasi tambahan sebelum kotak persyaratan
+
+                      // Box Persyaratan
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              spreadRadius: 2,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Center(
+                              child: Text(
+                                'PERSYARATAN',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('1. Fotokopi KTP.',
+                                    style: const TextStyle(height: 1.5)),
+                                Text('2. Fotokopi Kartu Keluarga.',
+                                    style: const TextStyle(height: 1.5)),
+                                Text('3. Surat Pernyataan Belum Menikah.',
+                                    style: const TextStyle(height: 1.5)),
+                                Text('4. Surat Pengantar dari RT/RW.',
+                                    style: const TextStyle(height: 1.5)),
+                                Text('5. Pas Foto 3x4 (2 lembar).',
+                                    style: const TextStyle(height: 1.5)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
               const SizedBox(height: 10),
               Expanded(
                 child: FutureBuilder(
@@ -148,28 +265,26 @@ class EsuketSkdomListScreen extends StatelessWidget {
               ),
             ],
           ),
-          floatingActionButton: Center(
-            child: SizedBox(
-              width: 200,
-              height: 60,
-              child: FilledButton.tonal(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const EsuketSkdomFormScreen(),
-                    ),
-                  );
-                },
-                style: ButtonStyle(
-                  padding: const WidgetStatePropertyAll(EdgeInsets.all(16)),
-                  backgroundColor: WidgetStatePropertyAll(
-                    Theme.of(context).colorScheme.primary.withAlpha(50),
+          floatingActionButton: SizedBox(
+            width: 200,
+            height: 60,
+            child: FilledButton.tonal(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const EsuketSkdomFormScreen(),
                   ),
+                );
+              },
+              style: ButtonStyle(
+                padding: const WidgetStatePropertyAll(EdgeInsets.all(16)),
+                backgroundColor: WidgetStatePropertyAll(
+                  Theme.of(context).colorScheme.primary.withAlpha(50),
                 ),
-                child: const Text(
-                  'Daftar Perizinan',
-                  style: TextStyle(fontSize: 18),
-                ),
+              ),
+              child: const Text(
+                'Daftar Perizinan',
+                style: TextStyle(fontSize: 18),
               ),
             ),
           ),
