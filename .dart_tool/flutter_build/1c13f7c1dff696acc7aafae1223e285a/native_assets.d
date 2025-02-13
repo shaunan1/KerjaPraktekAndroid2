@@ -1,0 +1,1 @@
+ C:\\Users\\safir\\OneDrive\\Dokumen\\kp_kom\\kp2\\.dart_tool\\flutter_build\\1c13f7c1dff696acc7aafae1223e285a\\native_assets.yaml: 
