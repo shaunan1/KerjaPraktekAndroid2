@@ -54,21 +54,28 @@ class _EsuketSkhslListScreenState extends State<EsuketSkhslListScreen> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.center, // Mengatur teks di tengah
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                        height: 1.2,
-                        color: Theme.of(context).colorScheme.primary,
+                    Center(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          height: 1.2,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        textAlign: TextAlign.center, // Teks di tengah
                       ),
                     ),
                     const SizedBox(height: 7),
-                    const Text(
-                      'Layanan $title',
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                    Center(
+                      child: Text(
+                        'Layanan $title',
+                        style: const TextStyle(fontWeight: FontWeight.w300),
+                        textAlign: TextAlign.center, // Teks di tengah
+                      ),
                     ),
                   ],
                 ),
@@ -135,28 +142,33 @@ class _EsuketSkhslListScreenState extends State<EsuketSkhslListScreen> {
               ),
             ],
           ),
-          floatingActionButton: IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const EsuketSkhslFormScreen(),
+          floatingActionButton: Center(
+            child: SizedBox(
+              width: 200,
+              height: 60,
+              child: FilledButton.tonal(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const EsuketSkhslFormScreen(),
+                    ),
+                  );
+                },
+                style: ButtonStyle(
+                  padding: const WidgetStatePropertyAll(EdgeInsets.all(16)),
+                  backgroundColor: WidgetStatePropertyAll(
+                    Theme.of(context).colorScheme.primary.withAlpha(50),
+                  ),
                 ),
-              );
-            },
-            icon: const Icon(
-              Icons.add,
-              size: 28,
-            ),
-            style: ButtonStyle(
-              padding: const WidgetStatePropertyAll(EdgeInsets.all(12)),
-              iconColor: WidgetStatePropertyAll(
-                Theme.of(context).colorScheme.primary,
-              ),
-              backgroundColor: WidgetStatePropertyAll(
-                Theme.of(context).colorScheme.primary.withAlpha(50),
+                child: const Text(
+                  'Daftar Perizinan',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
             ),
           ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
         );
       },
     );
