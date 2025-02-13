@@ -112,7 +112,7 @@ class _EsuketSkbnListScreenState extends State<EsuketSkbnListScreen> {
                             const Text(
                               'Surat Keterangan Belum Menikah Adalah Surat Yang Menerangkan Belum Pernah Menikah Alias Berstatus Lajang. '
                               'Pada Umumnya, Surat Ini Dibuat Sebagai Persyaratan Melamar Pekerjaan, Mengurus Pernikahan, Pengajuan Beasiswa, '
-                              'Urusan Kampus, Maupun Keperluan Atau Perjanjian Tertentu 541.',
+                              'Urusan Kampus, Maupun Keperluan Atau Perjanjian Tertentu.',
                               style: TextStyle(height: 1.5),
                             ),
                             const SizedBox(height: 12),
