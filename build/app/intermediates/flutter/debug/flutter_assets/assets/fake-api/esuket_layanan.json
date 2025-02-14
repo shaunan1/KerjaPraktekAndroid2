@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Surat Belum Menikah",
+    "slug": "skbn",
+    "description": "Layanan Surat Keterangan Belum Menikah"
+  },
+  {
+    "name": "Surat Boro",
+    "slug": "skboro",
+    "description": "Layanan Surat Keterangan Boro"
+  },
+  {
+    "name": "Surat Domisili",
+    "slug": "skdom",
+    "description": "Layanan Surat Keterangan Domisili"
+  },
+  {
+    "name": "Surat Keterangan Miskin",
+    "slug": "sktm",
+    "description": "Layanan Surat Keterangan Miskin"
+  },
+  {
+    "name": "Surat Penghasilan",
+    "slug": "skhsl",
+    "description": "Layanan Surat Keterangan Penghasilan"
+  },
+  {
+    "name": "Surat Usaha",
+    "slug": "skusaha",
+    "description": "Layanan Surat Keterangan Usaha"
+  },
+  {
+    "name": "Surat Keterangan",
+    "slug": "suket",
+    "description": "Layanan Surat Keterangan"
+  }
+]
