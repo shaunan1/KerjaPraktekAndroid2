@@ -174,7 +174,7 @@ class _EsuketServicesWidgetState extends State<EsuketServicesWidget> {
                                           case 'skbn':
                                             navigateTo(
                                               context,
-                                              const EsuketSuketListScreen(),
+                                              const EsuketSkbnListScreen(),
                                             );
                                             break;
                                           case 'skboro':

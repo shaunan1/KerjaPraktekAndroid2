@@ -4,7 +4,7 @@
             "outputFile": "com.kedirikota.pecut.app-mergeDebugResources-40:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\Semester 6\\Dart\\01\\hawa\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "D:\\Semester 6\\Dart\\02\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

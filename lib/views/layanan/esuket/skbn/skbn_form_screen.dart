@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _EsuketSkbnFormScreenState extends State<EsuketSkbnFormScreen> {
   File? fileUpload;
   bool isLoadingSubmit = false;
 
-  Future<void> handleFileUpload() async {
+  Future handleFileUpload() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png'],
@@ -44,34 +45,25 @@ class _EsuketSkbnFormScreenState extends State<EsuketSkbnFormScreen> {
         fileUpload = file;
       });
     } else {
+      // User canceled the picker
       print('filePicker: user canceled the picker!');
     }
   }
 
-  Future<void> handleSubmit() async {
-    if (fileUpload == null) {
-      handleSnackbar(context, 'Silakan upload file pengantar!');
-      return;
-    }
-
+  Future handleSubmit() async {
     setState(() {
       isLoadingSubmit = true;
     });
-
     try {
       String? esuketToken = await EsuketController().getToken();
       FormData formData = FormData.fromMap({
         'nik': nikCtrl.text,
         'kepada': kepadaCtrl.text,
         'peruntukan': peruntukanCtrl.text,
-        'pengantar': await MultipartFile.fromFile(
-          fileUpload!.path,
-          filename: pengantarCtrl.text,
-        ),
+        'pengantar': await MultipartFile.fromFile(fileUpload!.path,
+            filename: pengantarCtrl.text),
       });
       String url = '${dotenv.env['ESUKET_BASE_URL']}/api/skbn';
-      print('Request URL: $url');
-
       Response response = await dio.post(
         url,
         data: formData,
@@ -82,19 +74,20 @@ class _EsuketSkbnFormScreenState extends State<EsuketSkbnFormScreen> {
           },
         ),
       );
-
       handleSnackbar(context, response.data['message']);
-    } on DioException catch (e) {
-      print('errorSubmit: ${e.response?.data ?? e.message}');
-      handleSnackbar(context, 'Gagal mengirim data. Coba lagi!');
-    } finally {
       setState(() {
         isLoadingSubmit = false;
       });
+    } on DioException catch (e) {
+      setState(() {
+        isLoadingSubmit = false;
+      });
+      print(
+          'errorSubmit: ${e.response == null ? e.message : e.response?.data.toString()}');
     }
   }
 
-  void handleSnackbar(BuildContext context, String message) {
+  void handleSnackbar(BuildContext content, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -115,8 +108,8 @@ class _EsuketSkbnFormScreenState extends State<EsuketSkbnFormScreen> {
   Widget build(BuildContext context) {
     return Consumer<EsuketController>(
       builder: (context, esuket, child) {
-        nikCtrl.text = esuket.user?.nik ?? '';
-        kepadaCtrl.text = esuket.user?.name ?? '';
+        nikCtrl.text = esuket.user!.nik!;
+        kepadaCtrl.text = esuket.user!.name!;
 
         return GestureDetector(
           onTap: () {
@@ -132,90 +125,136 @@ class _EsuketSkbnFormScreenState extends State<EsuketSkbnFormScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    child: Form(
-                      key: _formKey,
-                      child: Wrap(
-                        runSpacing: 15,
-                        children: [
-                          TextFormFieldWidget(
-                            attributeCtrl: nikCtrl,
-                            labelText: 'NIK',
-                            iconData: Icons.badge,
-                            isRequired: true,
-                          ),
-                          TextFormFieldWidget(
-                            attributeCtrl: kepadaCtrl,
-                            labelText: 'Kepada',
-                            iconData: Icons.person,
-                            isRequired: true,
-                          ),
-                          TextFormFieldWidget(
-                            attributeCtrl: peruntukanCtrl,
-                            labelText: 'Peruntukan',
-                            iconData: Icons.more_horiz,
-                            isRequired: true,
-                          ),
-                          FormUploadWidget(
-                            label: const Text.rich(
-                              TextSpan(
-                                text: 'Upload file pengantar',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Form',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Buat $title',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            child: Form(
+                              key: _formKey,
+                              child: Wrap(
+                                runSpacing: 15,
                                 children: [
-                                  TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(color: Colors.red),
+                                  TextFormFieldWidget(
+                                    attributeCtrl: nikCtrl,
+                                    labelText: 'NIK',
+                                    iconData: Icons.badge,
+                                    isRequired: true,
+                                  ),
+                                  TextFormFieldWidget(
+                                    attributeCtrl: kepadaCtrl,
+                                    labelText: 'Kepada',
+                                    iconData: Icons.more_horiz,
+                                    isRequired: true,
+                                  ),
+                                  TextFormFieldWidget(
+                                    attributeCtrl: peruntukanCtrl,
+                                    labelText: 'Peruntukan',
+                                    iconData: Icons.more_horiz,
+                                    isRequired: true,
+                                  ),
+                                  FormUploadWidget(
+                                    label: const Text.rich(
+                                      TextSpan(
+                                        text: 'Upload file pengantar',
+                                        children: [
+                                          TextSpan(
+                                            text: ' *',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    fileImage: fileUpload,
+                                    onTap: () => handleFileUpload(),
+                                    onDelete: () {
+                                      setState(() {
+                                        fileUpload = null;
+                                      });
+                                    },
                                   ),
                                 ],
                               ),
                             ),
-                            fileImage: fileUpload,
-                            onTap: handleFileUpload,
-                            onDelete: () {
-                              setState(() {
-                                fileUpload = null;
-                                pengantarCtrl.clear();
-                              });
-                            },
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 60),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
                   child: SizedBox(
                     width: double.infinity,
                     child: TextButton.icon(
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(vertical: 15),
+                        padding: const WidgetStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 15),
                         ),
-                        shape: MaterialStateProperty.all(
+                        shape: const WidgetStatePropertyAll(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context).colorScheme.primary),
+                        backgroundColor: WidgetStatePropertyAll(
+                          Theme.of(context).colorScheme.primary,
+                        ),
+                        overlayColor: WidgetStatePropertyAll(
+                          Colors.black.withValues(alpha: .2),
+                        ),
                         foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                            const WidgetStatePropertyAll(Colors.white),
                       ),
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (pengantarCtrl.text.isEmpty) {
+                          print('upload file dulu woy!!!');
+                        }
+                        if (_formKey.currentState!.validate() &&
+                            fileUpload != null) {
+                          print('you tapped the submit button');
                           handleSubmit();
                         }
                       },
-                      icon: isLoadingSubmit
-                          ? const CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            )
-                          : const Icon(Icons.check),
-                      label: Text(
-                        isLoadingSubmit ? 'Processing...' : 'Submit',
+                      label: const Icon(Icons.check),
+                      icon: Text(
+                        isLoadingSubmit
+                            ? 'Processing...'
+                            : (widget.id == null ? 'Submit' : 'Update'),
                         style: const TextStyle(fontSize: 18),
                       ),
                     ),
