@@ -1,9 +1,9 @@
-#Thu Feb 13 22:17:14 WIB 2025
-base.0=D\:\\Semester 6\\Dart\\01\\hawa\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=D\:\\Semester 6\\Dart\\01\\hawa\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
-base.2=D\:\\Semester 6\\Dart\\01\\hawa\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.3=D\:\\Semester 6\\Dart\\01\\hawa\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.4=D\:\\Semester 6\\Dart\\01\\hawa\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\2\\classes.dex
+#Fri Feb 14 10:04:13 WIB 2025
+base.0=D\:\\Semester 6\\Dart\\02\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=D\:\\Semester 6\\Dart\\02\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
+base.2=D\:\\Semester 6\\Dart\\02\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.3=D\:\\Semester 6\\Dart\\02\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.4=D\:\\Semester 6\\Dart\\02\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\2\\classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex

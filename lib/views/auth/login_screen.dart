@@ -26,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(body),
-        backgroundColor: Colors.redAccent,
       ),
     );
   }
@@ -68,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 20),
                           Text(
                             'Welcome to PECUT',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -83,31 +82,40 @@ class _LoginScreenState extends State<LoginScreen> {
                             key: formKey,
                             child: Column(
                               children: [
-                                TextFormFieldWidget(
-                                  attributeCtrl: emailCtrl,
-                                  labelText: 'Email',
-                                  iconData: Icons.email,
+                                // Form email dengan underline style
+                                TextFormField(
+                                  controller: emailCtrl,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Email',
+                                    prefixIcon: Icon(Icons.email),
+                                    border:
+                                        UnderlineInputBorder(), // Garis bawah seperti form password
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Email is required';
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 const SizedBox(height: 15),
+                                // Form password tetap dengan underline style
                                 TextFormField(
                                   controller: passwordCtrl,
                                   obscureText: _isSecure,
                                   decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
                                     labelText: 'Password',
-                                    prefixIcon: Icon(Icons.lock),
+                                    prefixIcon: const Icon(Icons.lock),
                                     suffixIcon: InkWell(
                                       child: Icon(
                                         _isSecure
                                             ? Icons.visibility
                                             : Icons.visibility_off,
                                       ),
-                                      onTap: () => toggleSecure(),
+                                      onTap: toggleSecure,
                                     ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                                    border:
+                                        const UnderlineInputBorder(), // Garis bawah
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
@@ -117,6 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                                 const SizedBox(height: 20),
+                                // Tombol login
                                 SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton(

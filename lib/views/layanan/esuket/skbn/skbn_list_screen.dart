@@ -1,266 +1,162 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
-
-import 'dart:io';
+// ignore_for_file: avoid_print
 
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pecut/controllers/esuket_controller.dart';
-import 'package:pecut/widgets/form_upload_widget.dart';
-import 'package:pecut/widgets/text_form_field_widget.dart';
+import 'package:pecut/models/theme_color_model.dart';
+import 'package:pecut/views/layanan/esuket/skbn/skbn_detail_screen.dart';
+import 'package:pecut/views/layanan/esuket/skbn/skbn_form_screen.dart';
+import 'package:pecut/widgets/datalistview_widget.dart';
 import 'package:provider/provider.dart';
 
 const String title = 'Surat Keterangan Belum Menikah';
-final _formKey = GlobalKey<FormState>();
-final dio = Dio();
+final List<Map<String, dynamic>> actions = <Map<String, dynamic>>[
+  {
+    'value': 'view',
+    'label': 'Detail',
+  },
+];
 
-class EsuketSkbnFormScreen extends StatefulWidget {
-  final int? id;
-  const EsuketSkbnFormScreen({super.key, this.id});
+class EsuketSkbnListScreen extends StatefulWidget {
+  const EsuketSkbnListScreen({super.key});
 
   @override
-  State<EsuketSkbnFormScreen> createState() => _EsuketSkbnFormScreenState();
+  State<EsuketSkbnListScreen> createState() => _EsuketSkbnListScreenState();
 }
 
-class _EsuketSkbnFormScreenState extends State<EsuketSkbnFormScreen> {
-  TextEditingController nikCtrl = TextEditingController();
-  TextEditingController kepadaCtrl = TextEditingController();
-  TextEditingController peruntukanCtrl = TextEditingController();
-  TextEditingController pengantarCtrl = TextEditingController();
-  File? fileUpload;
-  bool isLoadingSubmit = false;
-
-  Future handleFileUpload() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'png'],
-    );
-
-    if (result != null) {
-      File file = File(result.files.single.path!);
-      print('filePicker: ${file.path}');
-      pengantarCtrl.text = result.files.first.name;
-      setState(() {
-        fileUpload = file;
-      });
-    } else {
-      // User canceled the picker
-      print('filePicker: user canceled the picker!');
-    }
-  }
-
-  Future handleSubmit() async {
-    setState(() {
-      isLoadingSubmit = true;
-    });
-    try {
-      String? esuketToken = await EsuketController().getToken();
-      FormData formData = FormData.fromMap({
-        'nik': nikCtrl.text,
-        'kepada': kepadaCtrl.text,
-        'peruntukan': peruntukanCtrl.text,
-        'pengantar': await MultipartFile.fromFile(fileUpload!.path,
-            filename: pengantarCtrl.text),
-      });
-      String url = '${dotenv.env['ESUKET_BASE_URL']}/api/skbn';
-      Response response = await dio.post(
-        url,
-        data: formData,
-        options: Options(
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $esuketToken',
-          },
-        ),
-      );
-      handleSnackbar(context, response.data['message']);
-      setState(() {
-        isLoadingSubmit = false;
-      });
-    } on DioException catch (e) {
-      setState(() {
-        isLoadingSubmit = false;
-      });
-      print(
-          'errorSubmit: ${e.response == null ? e.message : e.response?.data.toString()}');
-    }
-  }
-
-  void handleSnackbar(BuildContext content, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
+class _EsuketSkbnListScreenState extends State<EsuketSkbnListScreen> {
+  Future fetchData(String nik, String token) async {
+    final dio = Dio();
+    String url = '${dotenv.env['ESUKET_BASE_URL']}/api/skbn?nik=$nik';
+    Response response = await dio.get(
+      url,
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
       ),
     );
-  }
 
-  @override
-  void dispose() {
-    nikCtrl.dispose();
-    kepadaCtrl.dispose();
-    peruntukanCtrl.dispose();
-    pengantarCtrl.dispose();
-    super.dispose();
+    return response.data;
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<EsuketController>(
       builder: (context, esuket, child) {
-        nikCtrl.text = esuket.user!.nik!;
-        kepadaCtrl.text = esuket.user!.name!;
-
-        return GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(esuket.appName),
-              scrolledUnderElevation: 0,
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        decoration: const BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Form',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'Buat $title',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            child: Form(
-                              key: _formKey,
-                              child: Wrap(
-                                runSpacing: 15,
-                                children: [
-                                  TextFormFieldWidget(
-                                    attributeCtrl: nikCtrl,
-                                    labelText: 'NIK',
-                                    iconData: Icons.badge,
-                                    isRequired: true,
-                                  ),
-                                  TextFormFieldWidget(
-                                    attributeCtrl: kepadaCtrl,
-                                    labelText: 'Kepada',
-                                    iconData: Icons.more_horiz,
-                                    isRequired: true,
-                                  ),
-                                  TextFormFieldWidget(
-                                    attributeCtrl: peruntukanCtrl,
-                                    labelText: 'Peruntukan',
-                                    iconData: Icons.more_horiz,
-                                    isRequired: true,
-                                  ),
-                                  FormUploadWidget(
-                                    label: const Text.rich(
-                                      TextSpan(
-                                        text: 'Upload file pengantar',
-                                        children: [
-                                          TextSpan(
-                                            text: ' *',
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    fileImage: fileUpload,
-                                    onTap: () => handleFileUpload(),
-                                    onDelete: () {
-                                      setState(() {
-                                        fileUpload = null;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 60),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: TextButton.icon(
-                      style: ButtonStyle(
-                        padding: const WidgetStatePropertyAll(
-                          EdgeInsets.symmetric(vertical: 15),
-                        ),
-                        shape: const WidgetStatePropertyAll(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                        ),
-                        backgroundColor: WidgetStatePropertyAll(
-                          Theme.of(context).colorScheme.primary,
-                        ),
-                        overlayColor: WidgetStatePropertyAll(
-                          Colors.black.withValues(alpha: .2),
-                        ),
-                        foregroundColor:
-                            const WidgetStatePropertyAll(Colors.white),
-                      ),
-                      onPressed: () {
-                        if (pengantarCtrl.text.isEmpty) {
-                          print('upload file dulu woy!!!');
-                        }
-                        if (_formKey.currentState!.validate() &&
-                            fileUpload != null) {
-                          print('you tapped the submit button');
-                          handleSubmit();
-                        }
-                      },
-                      label: const Icon(Icons.check),
-                      icon: Text(
-                        isLoadingSubmit
-                            ? 'Processing...'
-                            : (widget.id == null ? 'Submit' : 'Update'),
-                        style: const TextStyle(fontSize: 18),
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(esuket.appName),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        height: 1.2,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 7),
+                    const Text(
+                      'Layanan $title',
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
+                  ],
                 ),
-              ],
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: FutureBuilder(
+                  future: fetchData(esuket.user!.nik!, esuket.token),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      List items = snapshot.data;
+                      return RefreshIndicator(
+                        onRefresh: () =>
+                            fetchData(esuket.user!.nik!, esuket.token),
+                        child: ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> item = items[index];
+                            ThemeColorModel theme =
+                                esuket.getThemeColor(item['st']['color']);
+                            return DatalistviewWidget(
+                              index: index,
+                              noSurat: item['nomor_surat'],
+                              tglSurat: item['tgl_surat'],
+                              peruntukan: item['peruntukan'],
+                              statusName: item['st']['name'],
+                              bgColor: theme.bgColor,
+                              textColor: theme.textColor,
+                              actions: actions,
+                              onSelected: (val) {
+                                print('selected: $val, withID: ${item['id']}');
+                                if (val == 'edit') {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          EsuketSkbnFormScreen(
+                                        id: item['id'],
+                                      ),
+                                    ),
+                                  );
+                                } else if (val == 'view') {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          EsuketSkbnDetailScreen(
+                                        id: item['id'],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+          floatingActionButton: IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const EsuketSkbnFormScreen(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.add,
+              size: 28,
+            ),
+            style: ButtonStyle(
+              padding: const WidgetStatePropertyAll(EdgeInsets.all(12)),
+              iconColor: WidgetStatePropertyAll(
+                Theme.of(context).colorScheme.primary,
+              ),
+              backgroundColor: WidgetStatePropertyAll(
+                Theme.of(context).colorScheme.primary.withAlpha(50),
+              ),
             ),
           ),
         );
