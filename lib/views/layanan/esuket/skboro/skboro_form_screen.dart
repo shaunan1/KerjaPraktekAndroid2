@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,6 +10,7 @@ import 'package:pecut/controllers/esuket_controller.dart';
 import 'package:pecut/widgets/form_upload_widget.dart';
 import 'package:pecut/widgets/text_form_field_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 const String title = 'Surat Keterangan Boro';
 final _formKey = GlobalKey<FormState>();
@@ -92,6 +95,18 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
     );
   }
 
+  Future<void> _selectDate(TextEditingController controller) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null) {
+      controller.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<EsuketController>(
@@ -171,17 +186,27 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                             iconData: Icons.home,
                             isRequired: true,
                           ),
-                          TextFormFieldWidget(
-                            attributeCtrl: tglMulaiCtrl,
-                            labelText: 'Tanggal Mulai',
-                            iconData: Icons.calendar_today,
-                            isRequired: true,
+                          GestureDetector(
+                            onTap: () => _selectDate(tglMulaiCtrl),
+                            child: AbsorbPointer(
+                              child: TextFormFieldWidget(
+                                attributeCtrl: tglMulaiCtrl,
+                                labelText: 'Tanggal Mulai',
+                                iconData: Icons.calendar_today,
+                                isRequired: true,
+                              ),
+                            ),
                           ),
-                          TextFormFieldWidget(
-                            attributeCtrl: tglSelesaiCtrl,
-                            labelText: 'Tanggal Selesai',
-                            iconData: Icons.calendar_today,
-                            isRequired: true,
+                          GestureDetector(
+                            onTap: () => _selectDate(tglSelesaiCtrl),
+                            child: AbsorbPointer(
+                              child: TextFormFieldWidget(
+                                attributeCtrl: tglSelesaiCtrl,
+                                labelText: 'Tanggal Selesai',
+                                iconData: Icons.calendar_today,
+                                isRequired: true,
+                              ),
+                            ),
                           ),
                           FormUploadWidget(
                             label: const Text('Upload file pengantar *',
