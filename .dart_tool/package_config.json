@@ -195,7 +195,11 @@
     },
     {
       "name": "google_fonts",
+<<<<<<< HEAD
+      "rootUri": "file:///C:/Users/Shaunan/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-6.2.1",
+=======
       "rootUri": "file:///C:/Users/safir/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-6.2.1",
+>>>>>>> f244c86c0f85fc4af61db8e32118d9186827815f
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -608,7 +612,11 @@
       "languageVersion": "3.5"
     }
   ],
+<<<<<<< HEAD
+  "generated": "2025-02-17T04:58:47.499426Z",
+=======
   "generated": "2025-02-18T01:32:16.062411Z",
+>>>>>>> f244c86c0f85fc4af61db8e32118d9186827815f
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///C:/flutter/flutter",
