@@ -1,11 +1,11 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pecut/controllers/esuket_controller.dart';
 import 'package:pecut/widgets/form_upload_widget.dart';
 import 'package:pecut/widgets/text_form_field_widget.dart';
@@ -45,14 +45,12 @@ class _EsuketSkdomFormScreenState extends State<EsuketSkdomFormScreen> {
 
     if (result != null) {
       File file = File(result.files.single.path!);
-      print('filePicker: ${file.path}');
       pengantarCtrl.text = result.files.first.name;
       setState(() {
         fileUpload = file;
       });
     } else {
-      // User canceled the picker
-      print('filePicker: user canceled the picker!');
+      print('File picker canceled by the user.');
     }
   }
 
@@ -86,32 +84,22 @@ class _EsuketSkdomFormScreenState extends State<EsuketSkdomFormScreen> {
         ),
       );
       handleSnackbar(context, response.data['message']);
-      setState(() {
-        isLoadingSubmit = false;
-      });
-    } on DioException catch (e) {
-      setState(() {
-        isLoadingSubmit = false;
-      });
-      print(
-          'errorSubmit: ${e.response == null ? e.message : e.response?.data.toString()}');
+    } catch (e) {
+      handleSnackbar(context, 'Terjadi kesalahan saat mengirim data');
     }
+    setState(() => isLoadingSubmit = false);
   }
 
-  void handleSnackbar(BuildContext content, String message) {
+  void handleSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
+      SnackBar(content: Text(message)),
     );
   }
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      registerAsCtrl = 'perorangan';
-    });
+    registerAsCtrl = 'perorangan';
   }
 
   @override
@@ -134,217 +122,142 @@ class _EsuketSkdomFormScreenState extends State<EsuketSkdomFormScreen> {
         nikCtrl.text = esuket.user!.nik!;
         kepadaCtrl.text = esuket.user!.name!;
 
-        return GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(esuket.appName),
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(esuket.appName,
+                style: GoogleFonts.poppins(
+                    fontSize: 18, fontWeight: FontWeight.w600)),
+            backgroundColor: Colors.blue.shade700,
+            elevation: 0,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text('Buat $title',
+                    style: GoogleFonts.poppins(
+                        fontSize: 22, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        decoration: const BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Form',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormFieldWidget(
+                            attributeCtrl: nikCtrl,
+                            labelText: 'NIK',
+                            iconData: Icons.badge,
+                            isRequired: true,
+                          ),
+                          TextFormFieldWidget(
+                            attributeCtrl: kepadaCtrl,
+                            labelText: 'Kepada',
+                            iconData: Icons.person,
+                            isRequired: true,
+                          ),
+                          TextFormFieldWidget(
+                            attributeCtrl: peruntukanCtrl,
+                            labelText: 'Peruntukan',
+                            iconData: Icons.description,
+                            isRequired: true,
+                          ),
+                          FormUploadWidget(
+                            label: const Text('Upload file pengantar *',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 0, 0, 0))),
+                            fileImage: fileUpload,
+                            onTap: handleFileUpload,
+                            onDelete: () => setState(() => fileUpload = null),
+                          ),
+                          TextFormFieldWidget(
+                            attributeCtrl: alamatCtrl,
+                            labelText: 'Alamat',
+                            iconData: Icons.location_on,
+                            isRequired: true,
+                            textInputType: TextInputType.multiline,
+                            minLines: 2,
+                          ),
+                          ToggleSwitch(
+                            initialLabelIndex:
+                                registerAsCtrl == 'perorangan' ? 0 : 1,
+                            fontSize: 16,
+                            minWidth: double.infinity,
+                            minHeight: 55,
+                            activeBgColor: [Colors.black.withAlpha(150)],
+                            inactiveBgColor: Colors.white,
+                            labels: const ['Perorangan', 'Perusahaan'],
+                            icons: const [Icons.person, Icons.apartment],
+                            iconSize: 22,
+                            onToggle: (index) {
+                              setState(() {
+                                registerAsCtrl =
+                                    index == 0 ? 'perorangan' : 'perusahaan';
+                              });
+                            },
+                          ),
+                          if (registerAsCtrl == 'perusahaan') ...[
+                            TextFormFieldWidget(
+                              attributeCtrl: namaPerusahaanCtrl,
+                              labelText: 'Nama Perusahaan',
+                              iconData: Icons.business,
+                              isRequired: true,
                             ),
-                            Text(
-                              'Buat $title',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                            TextFormFieldWidget(
+                              attributeCtrl: statusBangunanCtrl,
+                              labelText: 'Status Bangunan',
+                              iconData: Icons.house,
+                              isRequired: true,
+                            ),
+                            TextFormFieldWidget(
+                              attributeCtrl: jumlahKaryawanCtrl,
+                              labelText: 'Jumlah Karyawan',
+                              iconData: Icons.group,
+                              isRequired: true,
+                              textInputType: TextInputType.number,
                             ),
                           ],
-                        ),
+                        ],
                       ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            child: Form(
-                              key: _formKey,
-                              child: Wrap(
-                                runSpacing: 15,
-                                children: [
-                                  TextFormFieldWidget(
-                                    attributeCtrl: nikCtrl,
-                                    labelText: 'NIK',
-                                    iconData: Icons.badge,
-                                    isRequired: true,
-                                  ),
-                                  TextFormFieldWidget(
-                                    attributeCtrl: kepadaCtrl,
-                                    labelText: 'Kepada',
-                                    iconData: Icons.more_horiz,
-                                    isRequired: true,
-                                  ),
-                                  TextFormFieldWidget(
-                                    attributeCtrl: peruntukanCtrl,
-                                    labelText: 'Peruntukan',
-                                    iconData: Icons.more_horiz,
-                                    isRequired: true,
-                                  ),
-                                  FormUploadWidget(
-                                    label: const Text.rich(
-                                      TextSpan(
-                                        text: 'Upload file pengantar',
-                                        children: [
-                                          TextSpan(
-                                            text: ' *',
-                                            style: TextStyle(color: Colors.red),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    fileImage: fileUpload,
-                                    onTap: () => handleFileUpload(),
-                                    onDelete: () {
-                                      setState(() {
-                                        fileUpload = null;
-                                      });
-                                    },
-                                  ),
-                                  TextFormFieldWidget(
-                                    attributeCtrl: alamatCtrl,
-                                    labelText: 'Alamat',
-                                    textInputType: TextInputType.multiline,
-                                    iconData: Icons.more_horiz,
-                                    isRequired: true,
-                                    minLines: 2,
-                                  ),
-                                  ToggleSwitch(
-                                    initialLabelIndex:
-                                        registerAsCtrl == 'perorangan' ? 0 : 1,
-                                    fontSize: 16,
-                                    minWidth: double.infinity,
-                                    minHeight: 55,
-                                    activeBgColor: [
-                                      Colors.black.withAlpha(150)
-                                    ],
-                                    inactiveBgColor: Colors.white,
-                                    labels: const ['Perorangan', 'Perusahaan'],
-                                    icons: const [
-                                      Icons.person,
-                                      Icons.apartment
-                                    ],
-                                    iconSize: 22,
-                                    onToggle: (index) {
-                                      setState(() {
-                                        registerAsCtrl = index == 0
-                                            ? 'perorangan'
-                                            : 'perusahaan';
-                                      });
-                                    },
-                                  ),
-                                  Builder(
-                                    builder: (context) {
-                                      if (registerAsCtrl == 'perusahaan') {
-                                        return Wrap(
-                                          runSpacing: 15,
-                                          children: [
-                                            TextFormFieldWidget(
-                                              attributeCtrl: namaPerusahaanCtrl,
-                                              labelText: 'Nama Perusahaan',
-                                              iconData: Icons.more_horiz,
-                                              isRequired: registerAsCtrl ==
-                                                  'perusahaan',
-                                            ),
-                                            TextFormFieldWidget(
-                                              attributeCtrl: statusBangunanCtrl,
-                                              labelText: 'Status Bangunan',
-                                              iconData: Icons.more_horiz,
-                                              isRequired: registerAsCtrl ==
-                                                  'perusahaan',
-                                            ),
-                                            TextFormFieldWidget(
-                                              attributeCtrl: jumlahKaryawanCtrl,
-                                              labelText: 'Jumlah Karyawan',
-                                              iconData: Icons.more_horiz,
-                                              isRequired: registerAsCtrl ==
-                                                  'perusahaan',
-                                              textInputType:
-                                                  TextInputType.number,
-                                            ),
-                                            const SizedBox(height: 75),
-                                          ],
-                                        );
-                                      }
-                                      return Container();
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 60),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: TextButton.icon(
-                      style: ButtonStyle(
-                        padding: const WidgetStatePropertyAll(
-                          EdgeInsets.symmetric(vertical: 15),
-                        ),
-                        shape: const WidgetStatePropertyAll(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                        ),
-                        backgroundColor: WidgetStatePropertyAll(
-                          Theme.of(context).colorScheme.primary,
-                        ),
-                        overlayColor: WidgetStatePropertyAll(
-                          Colors.black.withValues(alpha: .2),
-                        ),
-                        foregroundColor:
-                            const WidgetStatePropertyAll(Colors.white),
-                      ),
-                      onPressed: () {
-                        if (pengantarCtrl.text.isEmpty) {
-                          print('upload file dulu woy!!!');
-                        }
-                        if (_formKey.currentState!.validate() &&
-                            fileUpload != null) {
-                          print('you tapped the submit button');
-                          handleSubmit();
-                        }
-                      },
-                      label: const Icon(Icons.check),
-                      icon: Text(
-                        isLoadingSubmit ? 'Processing...' : 'Submit',
-                        style: const TextStyle(fontSize: 18),
-                      ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade700,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate() &&
+                          fileUpload != null) {
+                        handleSubmit();
+                      } else {
+                        handleSnackbar(context,
+                            'Harap lengkapi semua data dan upload file!');
+                      }
+                    },
+                    icon: isLoadingSubmit
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child:
+                                CircularProgressIndicator(color: Colors.white))
+                        : const Icon(Icons.check, color: Colors.white),
+                    label: Text(
+                      isLoadingSubmit
+                          ? 'Mengirim...'
+                          : (widget.id == null ? 'Submit' : 'Update'),
+                      style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
                     ),
                   ),
                 ),
