@@ -239,13 +239,13 @@ class _EsuketSktmFormScreenState extends State<EsuketSktmFormScreen> {
                             TextFormFieldWidget(
                               attributeCtrl: kepadaNamaAnakCtrl,
                               labelText: 'Nama Anak',
-                              iconData: Icons.more_horiz,
+                              iconData: Icons.person_2,
                               isRequired: true,
                             ),
                             TextFormFieldWidget(
                               attributeCtrl: kepadaTempatLhrCtrl,
                               labelText: 'Tempat Lahir',
-                              iconData: Icons.more_horiz,
+                              iconData: Icons.south_america,
                               isRequired: true,
                             ),
                             Row(
@@ -282,19 +282,19 @@ class _EsuketSktmFormScreenState extends State<EsuketSktmFormScreen> {
                             TextFormFieldWidget(
                               attributeCtrl: kepadaSekolahCtrl,
                               labelText: 'Nama Sekolah',
-                              iconData: Icons.more_horiz,
+                              iconData: Icons.school,
                               isRequired: true,
                             ),
                             TextFormFieldWidget(
                               attributeCtrl: kepadaKelasCtrl,
                               labelText: 'Kelas',
-                              iconData: Icons.more_horiz,
+                              iconData: Icons.grade,
                               isRequired: true,
                             ),
                             TextFormFieldWidget(
                               attributeCtrl: kepadaAlamatSekolahCtrl,
                               labelText: 'Alamat Sekolah',
-                              iconData: Icons.more_horiz,
+                              iconData: Icons.apartment,
                               isRequired: true,
                             ),
                           ],

@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-2025/03/06-08:57:39.686 51f0 Reusing MANIFEST C:\Users\safir\AppData\Local\Temp\flutter_tools.f3e16391\flutter_tools_chrome_device.473e5c22\Default\Site Characteristics Database/MANIFEST-000001
-2025/03/06-08:57:39.690 51f0 Recovering log #10
-2025/03/06-08:57:39.691 51f0 Reusing old log C:\Users\safir\AppData\Local\Temp\flutter_tools.f3e16391\flutter_tools_chrome_device.473e5c22\Default\Site Characteristics Database/000010.log 
-2025/03/06-08:57:39.693 51f0 Delete type=0 #3
-=======
-2025/02/28-14:31:33.271 3278 Reusing MANIFEST C:\Users\Shaunan\AppData\Local\Temp\flutter_tools.17960f58\flutter_tools_chrome_device.fc9fb068\Default\Site Characteristics Database/MANIFEST-000001
-2025/02/28-14:31:33.272 3278 Recovering log #10
-2025/02/28-14:31:33.273 3278 Reusing old log C:\Users\Shaunan\AppData\Local\Temp\flutter_tools.17960f58\flutter_tools_chrome_device.fc9fb068\Default\Site Characteristics Database/000010.log 
-2025/02/28-14:31:33.276 3278 Delete type=0 #3
-2025/02/28-14:31:33.277 3278 Delete type=2 #13
-2025/02/28-14:31:33.277 3278 Delete type=2 #14
->>>>>>> 7fe1cdce53ad7b059b2c9563621599a141e6f1a8
+2025/03/06-09:07:18.864 18d8 Reusing MANIFEST C:\Users\safir\AppData\Local\Temp\flutter_tools.e9e79213\flutter_tools_chrome_device.6d76a19d\Default\Site Characteristics Database/MANIFEST-000001
+2025/03/06-09:07:18.867 18d8 Recovering log #10
+2025/03/06-09:07:18.869 18d8 Reusing old log C:\Users\safir\AppData\Local\Temp\flutter_tools.e9e79213\flutter_tools_chrome_device.6d76a19d\Default\Site Characteristics Database/000010.log 
+2025/03/06-09:07:18.871 18d8 Delete type=2 #3
+2025/03/06-09:07:18.871 18d8 Delete type=0 #3
