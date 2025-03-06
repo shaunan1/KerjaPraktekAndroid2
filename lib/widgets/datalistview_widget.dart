@@ -116,6 +116,37 @@ class DatalistviewWidget extends StatelessWidget {
                   style: TextStyle(color: textColor),
                 ),
               ),
+<<<<<<< HEAD
+=======
+              // PopupMenuButton(
+              //   onSelected: (value) {
+              //     onSelected(value);
+              //   },
+              //   color: Theme.of(context).colorScheme.surface,
+              //   itemBuilder: (context) => actions != null
+              //       ? List.generate(actions!.length, (index) {
+              //           return PopupMenuItem(
+              //             value: actions![index]['value'],
+              //             child: Text(actions![index]['label']),
+              //           );
+              //         })
+              //       : [
+              //           const PopupMenuItem(
+              //             value: 'view',
+              //             child: Text('Detail'),
+              //           ),
+              //           const PopupMenuItem(
+              //             value: 'edit',
+              //             child: Text('Edit'),
+              //           ),
+              //           const PopupMenuItem(
+              //             value: 'delete',
+              //             child: Text('Batalkan'),
+              //           ),
+              //         ],
+              //   icon: const Icon(Icons.more_horiz),
+              // ),
+>>>>>>> 6e8e60511a91c7f1a3f93a2f241334bac0fe1b04
             ],
           ),
         ),

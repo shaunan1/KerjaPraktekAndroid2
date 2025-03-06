@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pecut/controllers/esuket_controller.dart';
 import 'package:pecut/models/theme_color_model.dart';
 import 'package:pecut/views/layanan/esuket/skhsl/skhsl_detail_screen.dart';
@@ -34,12 +33,6 @@ class _EsuketSkhslListScreenState extends State<EsuketSkhslListScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
   Future fetchData(String nik, String token) async {
     final dio = Dio();
     String url = '${dotenv.env['ESUKET_BASE_URL']}/api/skhsl?nik=$nik';
@@ -61,13 +54,7 @@ class _EsuketSkhslListScreenState extends State<EsuketSkhslListScreen>
       builder: (context, esuket, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              esuket.appName,
-              style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            title: Text(esuket.appName),
             bottom: TabBar(
               controller: _tabController,
               tabs: const [
@@ -75,7 +62,6 @@ class _EsuketSkhslListScreenState extends State<EsuketSkhslListScreen>
                 Tab(text: 'List Izin Surat'),
               ],
               indicatorColor: Colors.blueAccent,
-              labelStyle: GoogleFonts.inter(fontSize: 16),
             ),
           ),
           body: TabBarView(
@@ -119,36 +105,34 @@ class _EsuketSkhslListScreenState extends State<EsuketSkhslListScreen>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Surat Keterangan Usaha',
-                style: GoogleFonts.inter(
+                'Surat Keterangan Penghasilan',
+                style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 10),
               Text(
-                'Surat ini digunakan sebagai bukti legalitas usaha seseorang untuk berbagai keperluan.',
-                style: GoogleFonts.inter(fontSize: 16),
+                'Surat ini digunakan untuk keperluan administrasi terkait penghasilan.',
+                style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 15),
               Divider(color: Colors.grey.shade300),
               Text(
                 'Persyaratan:',
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 10),
               ...[
-                "- Fotokopi KTP Pemohon",
-                "- Surat Pengantar dari RT/RW",
+                "- Fotokopi KTP",
                 "- Fotokopi KK",
-                "- Surat Pernyataan Usaha",
-                "- Bukti Kepemilikan Usaha (jika ada)",
+                "- Surat Keterangan Penghasilan dari RT/RW"
               ].map((item) => Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3),
-                    child: Text(item, style: GoogleFonts.inter(fontSize: 16)),
+                    child: Text(item, style: TextStyle(fontSize: 16)),
                   )),
             ],
           ),
@@ -172,32 +156,41 @@ class _EsuketSkhslListScreenState extends State<EsuketSkhslListScreen>
                 Map<String, dynamic> item = items[index];
                 ThemeColorModel theme =
                     esuket.getThemeColor(item['st']['color']);
-                return DatalistviewWidget(
-                  index: index,
-                  noSurat: item['nomor_surat'],
-                  tglSurat: item['tgl_surat'],
-                  peruntukan: item['peruntukan'],
-                  statusName: item['st']['name'],
-                  bgColor: theme.bgColor,
-                  textColor: theme.textColor,
-                  actions: actions,
-                  onSelected: (val) {
-                    if (val == 'edit') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              EsuketSkhslFormScreen(id: item['id']),
-                        ),
-                      );
-                    } else if (val == 'view') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              EsuketSkhslDetailScreen(id: item['id']),
-                        ),
-                      );
-                    }
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EsuketSkhslDetailScreen(id: item['id']),
+                      ),
+                    );
                   },
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: DatalistviewWidget(
+                      index: index,
+                      noSurat: item['nomor_surat'],
+                      tglSurat: item['tgl_surat'],
+                      peruntukan: item['peruntukan'],
+                      statusName: item['st']['name'],
+                      bgColor: theme.bgColor,
+                      textColor: theme.textColor,
+                      onSelected: (val) {},
+                    ),
+                  ),
                 );
               },
             ),

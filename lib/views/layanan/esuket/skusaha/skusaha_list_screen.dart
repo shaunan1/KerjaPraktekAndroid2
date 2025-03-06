@@ -134,28 +134,41 @@ class _EsuketSkusahaListScreenState extends State<EsuketSkusahaListScreen>
                 Map<String, dynamic> item = items[index];
                 ThemeColorModel theme =
                     esuket.getThemeColor(item['st']['color']);
-                return DatalistviewWidget(
-                  index: index,
-                  noSurat: item['nomor_surat'],
-                  tglSurat: item['tgl_surat'],
-                  peruntukan: item['peruntukan'],
-                  statusName: item['st']['name'],
-                  bgColor: theme.bgColor,
-                  textColor: theme.textColor,
-                  actions: const [
-                    {'value': 'view', 'label': 'Detail'}
-                  ],
-                  onSelected: (val) {
-                    if (val == 'view') {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => EsuketSkusahaDetailScreen(
-                            id: item['id'],
-                          ),
-                        ),
-                      );
-                    }
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EsuketSkusahaDetailScreen(id: item['id']),
+                      ),
+                    );
                   },
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: DatalistviewWidget(
+                      index: index,
+                      noSurat: item['nomor_surat'],
+                      tglSurat: item['tgl_surat'],
+                      peruntukan: item['peruntukan'],
+                      statusName: item['st']['name'],
+                      bgColor: theme.bgColor,
+                      textColor: theme.textColor,
+                      onSelected: (val) {}, //kosongkan
+                    ),
+                  ),
                 );
               },
             ),
