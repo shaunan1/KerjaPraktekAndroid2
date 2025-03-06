@@ -175,19 +175,19 @@ class _EsuketSuketFormScreenState extends State<EsuketSuketFormScreen> {
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaCtrl,
                                     labelText: 'Kepada',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.co_present,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: peruntukanCtrl,
                                     labelText: 'Peruntukan',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.description,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: keteranganCtrl,
                                     labelText: 'Keterangan',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.web,
                                     isRequired: true,
                                   ),
                                   FormUploadWidget(

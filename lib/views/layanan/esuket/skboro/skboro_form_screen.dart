@@ -247,13 +247,13 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaCtrl,
                                     labelText: 'Nama',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.person,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: peruntukanCtrl,
                                     labelText: 'Peruntukan',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.description,
                                     isRequired: true,
                                   ),
                                   Column(
@@ -415,7 +415,7 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                                   TextFormFieldWidget(
                                     attributeCtrl: alamatCtrl,
                                     labelText: 'Alamat',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.home,
                                     isRequired: true,
                                   ),
                                   Row(
@@ -426,7 +426,7 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                                         child: TextFormFieldWidget(
                                           attributeCtrl: tglMulaiCtrl,
                                           labelText: 'Tanggal Mulai',
-                                          iconData: Icons.more_horiz,
+                                          iconData: Icons.calendar_month,
                                         ),
                                       ),
                                       DatepickerButtonWidget(
@@ -441,7 +441,7 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                                         child: TextFormFieldWidget(
                                           attributeCtrl: tglSelesaiCtrl,
                                           labelText: 'Tanggal Selesai',
-                                          iconData: Icons.more_horiz,
+                                          iconData: Icons.calendar_month,
                                         ),
                                       ),
                                       DatepickerButtonWidget(
@@ -471,7 +471,7 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                                   TextFormFieldWidget(
                                     attributeCtrl: namaPengikutCtrl,
                                     labelText: 'Nama',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.person,
                                     isRequired: false,
                                   ),
                                   DropdownWidget(
@@ -481,11 +481,12 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                                       genderPengikutCtrl.text = value;
                                     },
                                     judul: "Jenis Kelamin",
+                                    // icon: Icons.person,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: umurPengikutCtrl,
                                     labelText: 'Umur',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.elderly,
                                     isRequired: false,
                                   ),
                                   DropdownWidget(
@@ -704,12 +705,14 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                 child: ContentWidget(
                   value: _pengikutNIK[index],
                   label: 'NIK:',
+                  icon: Icons.badge,
                 ),
               ),
               Expanded(
                 child: ContentWidget(
                   value: _pengikutNama[index],
                   label: 'Nama:',
+                  icon: Icons.person,
                 ),
               ),
             ],
@@ -721,12 +724,14 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                 child: ContentWidget(
                   value: genderList[int.parse(_pengikutGender[index]) - 1],
                   label: 'Jenis Kelamin:',
+                  icon: Icons.wc,
                 ),
               ),
               Expanded(
                 child: ContentWidget(
                   value: _pengikutUmur[index],
                   label: 'Umur:',
+                  icon: Icons.elderly,
                 ),
               ),
             ],
@@ -739,12 +744,14 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
                   value:
                       perkawinanList[int.parse(_pengikutPerkawinan[index]) - 1],
                   label: 'Status:',
+                  icon: Icons.diversity_3,
                 ),
               ),
               Expanded(
                 child: ContentWidget(
                   value: _pengikutHubungan[index],
                   label: 'Hubungan:',
+                  icon: Icons.diversity_1,
                 ),
               ),
             ],
@@ -758,10 +765,13 @@ class _EsuketSkboroFormScreenState extends State<EsuketSkboroFormScreen> {
 class ContentWidget extends StatelessWidget {
   final dynamic value;
   final String label;
+  final IconData? icon;
+
   const ContentWidget({
     super.key,
     required this.value,
     required this.label,
+    this.icon,
   });
 
   @override
@@ -769,6 +779,7 @@ class ContentWidget extends StatelessWidget {
     return ListTile(
       title: Text(label),
       subtitle: Text(value),
+      leading: icon != null ? Icon(icon) : null,
     );
   }
 }

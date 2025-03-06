@@ -211,6 +211,112 @@ class _EsuketSktmFormScreenState extends State<EsuketSktmFormScreen> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
+<<<<<<< HEAD
+=======
+                          TextFormFieldWidget(
+                            attributeCtrl: peruntukanCtrl,
+                            labelText: 'Peruntukan',
+                            iconData: Icons.description,
+                            isRequired: true,
+                          ),
+                          DropdownWidget(
+                            dropDownItems: kategoriItems,
+                            inputController: kategoriCtrl,
+                            onChanged: (value) {
+                              kategoriCtrl.text = value;
+                            },
+                            judul: "Kategori DTSKS",
+                          ),
+                          FormUploadWidget(
+                            label: const Text('Upload file pengantar *',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 0, 0, 0))),
+                            fileImage: fileUpload,
+                            onTap: handleFileUpload,
+                            onDelete: () => setState(() => fileUpload = null),
+                          ),
+                          ToggleSwitch(
+                            initialLabelIndex:
+                                registerAsCtrl == 'perorangan' ? 0 : 1,
+                            fontSize: 16,
+                            minWidth: double.infinity,
+                            minHeight: 55,
+                            activeBgColor: [Colors.black.withAlpha(150)],
+                            inactiveBgColor: Colors.white,
+                            labels: const ['Perorangan', 'Sekolah'],
+                            icons: const [Icons.person, Icons.apartment],
+                            iconSize: 22,
+                            onToggle: (index) {
+                              setState(() {
+                                registerAsCtrl =
+                                    index == 0 ? 'perorangan' : 'sekolah';
+                              });
+                            },
+                          ),
+                          if (registerAsCtrl == 'sekolah') ...[
+                            TextFormFieldWidget(
+                              attributeCtrl: kepadaNamaAnakCtrl,
+                              labelText: 'Nama Anak',
+                              iconData: Icons.person_2,
+                              isRequired: true,
+                            ),
+                            TextFormFieldWidget(
+                              attributeCtrl: kepadaTempatLhrCtrl,
+                              labelText: 'Tempat Lahir',
+                              iconData: Icons.south_america,
+                              isRequired: true,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: TextFormFieldWidget(
+                                    attributeCtrl: kepadaTglLhrCtrl,
+                                    labelText: 'Tanggal Lahir',
+                                    iconData: Icons.calendar_today,
+                                    isRequired: true,
+                                  ),
+                                ),
+                                DatepickerButtonWidget(
+                                    attributeCtrl: kepadaTglLhrCtrl),
+                              ],
+                            ),
+                            DropdownWidget(
+                              dropDownItems: genderItems,
+                              inputController: kepadaGenderCtrl,
+                              onChanged: (value) {
+                                kepadaGenderCtrl.text = value;
+                              },
+                              judul: "Jenis Kelamin",
+                            ),
+                            DropdownWidget(
+                              dropDownItems: hubunganItems,
+                              inputController: kepadaHubunganCtrl,
+                              onChanged: (value) {
+                                kepadaHubunganCtrl.text = value;
+                              },
+                              judul: "Hubungan Keluarga",
+                            ),
+                            TextFormFieldWidget(
+                              attributeCtrl: kepadaSekolahCtrl,
+                              labelText: 'Nama Sekolah',
+                              iconData: Icons.school,
+                              isRequired: true,
+                            ),
+                            TextFormFieldWidget(
+                              attributeCtrl: kepadaKelasCtrl,
+                              labelText: 'Kelas',
+                              iconData: Icons.grade,
+                              isRequired: true,
+                            ),
+                            TextFormFieldWidget(
+                              attributeCtrl: kepadaAlamatSekolahCtrl,
+                              labelText: 'Alamat Sekolah',
+                              iconData: Icons.apartment,
+                              isRequired: true,
+                            ),
+                          ],
+>>>>>>> 8e9226cb6cbca75af61cc0480deb32a537637050
                         ],
                       ),
                     ),

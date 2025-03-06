@@ -196,25 +196,25 @@ class _EsuketSkusahaFormScreenState extends State<EsuketSkusahaFormScreen> {
                                   TextFormFieldWidget(
                                     attributeCtrl: namaUsahaCtrl,
                                     labelText: 'Nama Usaha',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.work,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: alamatUsahaCtrl,
                                     labelText: 'Alamat Usaha',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.south_america,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaCtrl,
                                     labelText: 'Kepada',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.co_present,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: peruntukanCtrl,
                                     labelText: 'Peruntukan',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.description,
                                     isRequired: true,
                                   ),
                                   FormUploadWidget(

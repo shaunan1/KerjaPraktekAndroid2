@@ -118,7 +118,7 @@ class _EsuketSkbnFormScreenState extends State<EsuketSkbnFormScreen> {
                           ),
                           TextFormFieldWidget(
                             attributeCtrl: kepadaCtrl,
-                            labelText: 'Kepada',
+                            labelText: 'Nama',
                             iconData: Icons.person,
                             isRequired: true,
                           ),

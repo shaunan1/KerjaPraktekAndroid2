@@ -220,25 +220,25 @@ class _EsuketSkhslFormScreenState extends State<EsuketSkhslFormScreen> {
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaCtrl,
                                     labelText: 'Nama',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.person,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: peruntukanCtrl,
                                     labelText: 'Peruntukan',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.summarize,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaNamaAnakCtrl,
                                     labelText: 'Nama Anak',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.person_2,
                                     isRequired: true,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaTempatLhrCtrl,
                                     labelText: 'Tempat Lahir',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.south_america,
                                   ),
                                   Row(
                                     mainAxisAlignment:
@@ -248,7 +248,7 @@ class _EsuketSkhslFormScreenState extends State<EsuketSkhslFormScreen> {
                                         child: TextFormFieldWidget(
                                           attributeCtrl: kepadaTglLhrCtrl,
                                           labelText: 'Tanggal Lahir',
-                                          iconData: Icons.more_horiz,
+                                          iconData: Icons.calendar_month,
                                         ),
                                       ),
                                       DatepickerButtonWidget(
@@ -274,22 +274,22 @@ class _EsuketSkhslFormScreenState extends State<EsuketSkhslFormScreen> {
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaSekolahCtrl,
                                     labelText: 'Nama Sekolah',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.school,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaKelasCtrl,
                                     labelText: 'Kelas',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.grade,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: kepadaAlamatSekolahCtrl,
                                     labelText: 'Alamat Sekolah',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.apartment,
                                   ),
                                   TextFormFieldWidget(
                                     attributeCtrl: penghasilanCtrl,
                                     labelText: 'Penghasilan',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.credit_card,
                                     textInputType: TextInputType.number,
                                     onChanged: (value) =>
                                         handleNominal(value, terbilangCtrl),
@@ -297,7 +297,7 @@ class _EsuketSkhslFormScreenState extends State<EsuketSkhslFormScreen> {
                                   TextFormFieldWidget(
                                     attributeCtrl: terbilangCtrl,
                                     labelText: 'Terbilang',
-                                    iconData: Icons.more_horiz,
+                                    iconData: Icons.calculate,
                                   ),
                                   const SizedBox(height: 75),
                                   FormUploadWidget(
