@@ -7,8 +7,11 @@ import 'package:pecut/models/layanan_model.dart';
 class CardLayananWidget extends StatefulWidget {
   final List<LayananModel> layananItems;
   final Function onTap;
-  const CardLayananWidget(
-      {super.key, required this.layananItems, required this.onTap});
+  const CardLayananWidget({
+    super.key,
+    required this.layananItems,
+    required this.onTap,
+  });
 
   @override
   State<CardLayananWidget> createState() => _CardLayananWidgetState();
@@ -36,6 +39,13 @@ class _CardLayananWidgetState extends State<CardLayananWidget> {
                 child: Container(
                   width: 100,
                   height: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Latar belakang tetap putih
+                    borderRadius: BorderRadius.circular(8), // Sudut membulat
+                    border: Border.all(
+                        color:
+                            Colors.grey.shade300), // Batas tipis tanpa shadow
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
