@@ -192,7 +192,7 @@ class _EsuketSkbnListScreenState extends State<EsuketSkbnListScreen>
                     statusName: item['st']['name'],
                     bgColor: theme.bgColor,
                     textColor: theme.textColor,
-                    onSelected: (val) {}, // Fungsi kosong agar tidak error
+                    onSelected: (val) {}, //kosongkan
                   ),
                 ),
               );
