@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -66,6 +64,9 @@ class EsuketSkbnDetailScreen extends StatelessWidget {
                           ContentWidget(
                               label: 'Peruntukan:', value: item['peruntukan']),
                           ContentWidget(label: 'NIK:', value: item['nik']),
+                          ContentWidget(
+                              label: 'Tanggal Surat:',
+                              value: item['tgl_surat']),
                           ListTile(
                             title: const Text('Status:'),
                             subtitle: Container(
@@ -75,21 +76,21 @@ class EsuketSkbnDetailScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(5),
                                 color: theme.bgColor,
                               ),
-                              child: Text(item['st']['name'],
-                                  style: TextStyle(color: theme.textColor)),
+                              child: Text(
+                                item['st']['name'],
+                                style: TextStyle(color: theme.textColor),
+                              ),
                             ),
                           ),
-                          ContentWidget(
-                              label: 'Tanggal Surat:',
-                              value: item['tgl_surat']),
                           ListTile(
                             title: const Text('File:'),
                             subtitle: item['file'] != null
                                 ? TextButton(
-                                    child: const Text('Download',
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.underline)),
+                                    child: const Text(
+                                      'Download',
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline),
+                                    ),
                                     onPressed: () =>
                                         print('Download: ${item['file']}'),
                                   )

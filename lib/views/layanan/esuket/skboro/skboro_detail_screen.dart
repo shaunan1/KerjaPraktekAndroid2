@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pecut/controllers/esuket_controller.dart';
 import 'package:pecut/models/theme_color_model.dart';
-import 'package:pecut/widgets/timeline_pelayanan_widget.dart';
 import 'package:provider/provider.dart';
 
 final dio = Dio();
@@ -23,7 +22,6 @@ class EsuketSkboroDetailScreen extends StatelessWidget {
         },
       ),
     );
-
     return response.data;
   }
 
@@ -31,189 +29,95 @@ class EsuketSkboroDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<EsuketController>(
       builder: (context, esuket, child) {
-        return DefaultTabController(
-          initialIndex: 0,
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text('Detail Pengajuan: ${id.toString()}'),
-              bottom: const TabBar(
-                tabs: <Widget>[
-                  Tab(
-                    icon: Icon(Icons.file_copy),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.history),
-                  ),
-                ],
-              ),
-            ),
-            body: TabBarView(children: [
-              FutureBuilder(
-                future: fetchData(esuket.user!.nik!, esuket.token),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.hasData) {
-                    List items = List.from(snapshot.data)
-                        .where((item) => item['id'] == id)
-                        .toList();
-                    Map<String, dynamic> item = items[0];
-                    ThemeColorModel theme =
-                        esuket.getThemeColor(item['st']['color']);
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      child: Wrap(
-                        runSpacing: 10,
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Detail Pengajuan: ${id.toString()}'),
+          ),
+          body: FutureBuilder(
+            future: fetchData(esuket.user!.nik!, esuket.token),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                List items = List.from(snapshot.data)
+                    .where((item) => item['id'] == id)
+                    .toList();
+                if (items.isEmpty) {
+                  return const Center(child: Text('Data tidak ditemukan'));
+                }
+                Map<String, dynamic> item = items[0];
+                ThemeColorModel theme =
+                    esuket.getThemeColor(item['st']['color']);
+
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Material(
-                            elevation: 0.1,
-                            borderRadius: BorderRadius.circular(10),
-                            child: ListTile(
-                              title: const Text('Nomor Surat:'),
-                              subtitle: Text(item['nomor_surat']),
-                              tileColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                          ContentWidget(
+                              label: 'Nomor Surat:',
+                              value: item['nomor_surat']),
+                          ContentWidget(label: 'NIK:', value: item['nik']),
+                          ContentWidget(
+                              label: 'Peruntukan:', value: item['peruntukan']),
+                          ContentWidget(
+                              label: 'Tanggal Surat:',
+                              value: item['tgl_surat']),
+                          ListTile(
+                            title: const Text('Status:'),
+                            subtitle: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: theme.bgColor,
+                              ),
+                              child: Text(
+                                item['st']['name'],
+                                style: TextStyle(color: theme.textColor),
                               ),
                             ),
                           ),
-                          Card(
-                            color: Colors.white,
-                            elevation: 0.1,
-                            child: Wrap(
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Expanded(
-                                    //   child: ContentWidget(
-                                    //     value: item['kepada'],
-                                    //     label: 'Kepada:',
-                                    //   ),
-                                    // ),
-                                    Expanded(
-                                      child: ContentWidget(
-                                        value: item['nik'],
-                                        label: 'NIK:',
-                                      ),
+                          ListTile(
+                            title: const Text('File:'),
+                            subtitle: item['file'] != null
+                                ? TextButton(
+                                    child: const Text(
+                                      'Download',
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline),
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: ContentWidget(
-                                        value: item['peruntukan'],
-                                        label: 'Peruntukan:',
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: ListTile(
-                                        title: const Text('Status:'),
-                                        subtitle: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 2, horizontal: 5),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: theme.bgColor,
-                                          ),
-                                          child: Text(
-                                            item['st']['name'],
-                                            style: TextStyle(
-                                                color: theme.textColor),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: ContentWidget(
-                                        value: item['tgl_surat'],
-                                        label: 'Tgl. Surat:',
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: ListTile(
-                                        title: const Text('File:'),
-                                        subtitle: item['file'] != null
-                                            ? Row(
-                                                children: [
-                                                  TextButton(
-                                                    child: const Text(
-                                                      'Download',
-                                                      style: TextStyle(
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      print(
-                                                        'readyToDownload: ${item['file']}',
-                                                      );
-                                                    },
-                                                  ),
-                                                ],
-                                              )
-                                            : const Text('-'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Image(
-                                        image: NetworkImage(
-                                          '${dotenv.env['ESUKET_BASE_URL']!}${item['pengantar']}',
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                    onPressed: () =>
+                                        print('Download: ${item['file']}'),
+                                  )
+                                : const Text('-'),
                           ),
+                          const SizedBox(height: 10),
+                          if (item['pengantar'] != null)
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                '${dotenv.env['ESUKET_BASE_URL']!}${item['pengantar']}',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                         ],
                       ),
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FutureBuilder(
-                  future: fetchData(esuket.user!.nik!, esuket.token),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.hasData) {
-                      List items = List.from(snapshot.data)
-                          .where((item) => item['id'] == id)
-                          .toList();
-                      Map<String, dynamic> item = items[0];
-                      return TimelinePelayananWidget(dataPelayanan: item);
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ]),
+                    ),
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
         );
       },
@@ -233,8 +137,8 @@ class ContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(label),
-      subtitle: Text(value),
+      title: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(value ?? '-'),
     );
   }
 }
