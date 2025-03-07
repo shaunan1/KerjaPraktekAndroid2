@@ -211,8 +211,6 @@ class _EsuketSktmFormScreenState extends State<EsuketSktmFormScreen> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-<<<<<<< HEAD
-=======
                           TextFormFieldWidget(
                             attributeCtrl: peruntukanCtrl,
                             labelText: 'Peruntukan',
@@ -316,7 +314,6 @@ class _EsuketSktmFormScreenState extends State<EsuketSktmFormScreen> {
                               isRequired: true,
                             ),
                           ],
->>>>>>> 8e9226cb6cbca75af61cc0480deb32a537637050
                         ],
                       ),
                     ),

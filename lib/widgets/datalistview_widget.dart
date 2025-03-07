@@ -116,8 +116,7 @@ class DatalistviewWidget extends StatelessWidget {
                   style: TextStyle(color: textColor),
                 ),
               ),
-<<<<<<< HEAD
-=======
+
               // PopupMenuButton(
               //   onSelected: (value) {
               //     onSelected(value);
@@ -146,7 +145,6 @@ class DatalistviewWidget extends StatelessWidget {
               //         ],
               //   icon: const Icon(Icons.more_horiz),
               // ),
->>>>>>> 6e8e60511a91c7f1a3f93a2f241334bac0fe1b04
             ],
           ),
         ),
