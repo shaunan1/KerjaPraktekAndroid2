@@ -140,6 +140,8 @@ class _EsuketSkbnListScreenState extends State<EsuketSkbnListScreen>
     );
   }
 
+  
+
   Widget _buildListSurat(EsuketController esuket) {
     return FutureBuilder(
       future: fetchData(esuket.user!.nik!, esuket.token),
