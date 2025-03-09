@@ -12,6 +12,7 @@ final dio = Dio();
 
 class EsuketController extends ChangeNotifier {
   String get appName => 'e-SUKET';
+  String searchQuery = '';
 
   String _token = '';
   String get token => _token;

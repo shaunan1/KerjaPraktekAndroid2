@@ -11,15 +11,6 @@ import 'package:pecut/views/layanan/esuket/skdom/skdom_form_screen.dart';
 import 'package:pecut/widgets/datalistview_widget.dart';
 import 'package:provider/provider.dart';
 
-const String title = 'Surat Keterangan Domisili';
-
-final List<Map<String, dynamic>> actions = <Map<String, dynamic>>[
-  {
-    'value': 'view',
-    'label': 'Detail',
-  },
-];
-
 class EsuketSkdomListScreen extends StatefulWidget {
   const EsuketSkdomListScreen({super.key});
 
@@ -30,6 +21,7 @@ class EsuketSkdomListScreen extends StatefulWidget {
 class _EsuketSkdomListScreenState extends State<EsuketSkdomListScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  String searchQuery = '';
 
   @override
   void initState() {
@@ -153,65 +145,100 @@ class _EsuketSkdomListScreenState extends State<EsuketSkdomListScreen>
   }
 
   Widget _buildListSurat(EsuketController esuket) {
-    return FutureBuilder(
-      future: fetchData(esuket.user!.nik!, esuket.token),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.hasData) {
-          List items = snapshot.data;
-          return RefreshIndicator(
-            onRefresh: () => fetchData(esuket.user!.nik!, esuket.token),
-            child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                Map<String, dynamic> item = items[index];
-                ThemeColorModel theme =
-                    esuket.getThemeColor(item['st']['color']);
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            EsuketSkdomDetailScreen(id: item['id']),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 5,
-                          offset: const Offset(0, 2),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: TextField(
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              hintText: 'Telusuri Surat',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onChanged: (value) {
+              setState(() {
+                searchQuery = value; 
+              });
+            },
+          ),
+        ),
+        Expanded(
+          child: FutureBuilder(
+            future: fetchData(esuket.user!.nik!, esuket.token),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                List items = snapshot.data;
+                List filteredItems = items.where((item) {
+                  String peruntukan =
+                      item['peruntukan'].toString().toLowerCase();
+                  String tglSurat = item['tgl_surat']
+                      .toString();
+                  bool matchesPeruntukan =
+                      peruntukan.contains(searchQuery.toLowerCase());
+                  bool matchesDate =
+                      tglSurat.contains(searchQuery);
+                  return matchesPeruntukan || matchesDate;
+                }).toList();
+
+                return RefreshIndicator(
+                  onRefresh: () => fetchData(esuket.user!.nik!, esuket.token),
+                  child: ListView.builder(
+                    itemCount: filteredItems.length,
+                    itemBuilder: (context, index) {
+                      Map<String, dynamic> item = filteredItems[index];
+                      ThemeColorModel theme =
+                          esuket.getThemeColor(item['st']['color']);
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EsuketSkdomDetailScreen(id: item['id']),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: DatalistviewWidget(
+                            index: index,
+                            noSurat: item['nomor_surat'],
+                            tglSurat: item['tgl_surat'],
+                            peruntukan: item['peruntukan'],
+                            statusName: item['st']['name'],
+                            bgColor: theme.bgColor,
+                            textColor: theme.textColor,
+                            onSelected: (val) {},
+                          ),
                         ),
-                      ],
-                    ),
-                    child: DatalistviewWidget(
-                      index: index,
-                      noSurat: item['nomor_surat'],
-                      tglSurat: item['tgl_surat'],
-                      peruntukan: item['peruntukan'],
-                      statusName: item['st']['name'],
-                      bgColor: theme.bgColor,
-                      textColor: theme.textColor,
-                      onSelected: (val) {},
-                    ),
+                      );
+                    },
                   ),
                 );
-              },
-            ),
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 }
