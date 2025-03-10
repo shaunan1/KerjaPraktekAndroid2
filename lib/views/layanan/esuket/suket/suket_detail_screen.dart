@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:open_file/open_file.dart';
 import 'package:pecut/controllers/esuket_controller.dart';
 import 'package:pecut/models/theme_color_model.dart';
 import 'package:provider/provider.dart';
@@ -96,8 +99,14 @@ class EsuketSuketDetailScreen extends StatelessWidget {
                                       style: TextStyle(
                                           decoration: TextDecoration.underline),
                                     ),
-                                    onPressed: () =>
-                                        print('Download: ${item['file']}'),
+                                    onPressed: () {
+                                      String fileUrl =
+                                          '${dotenv.env['ESUKET_BASE_URL']}${item['file']}'
+                                              .replaceFirst(
+                                                  'http://', 'https://');
+                                      FileDownloader()
+                                          .downloadFile(fileUrl, context);
+                                    },
                                   )
                                 : const Text('-'),
                           ),
@@ -140,5 +149,54 @@ class ContentWidget extends StatelessWidget {
         subtitle: Text(value ?? '-'),
       ),
     );
+  }
+}
+
+class FileDownloader {
+  final Dio dio = Dio();
+
+  Future<void> downloadFile(String url, BuildContext context) async {
+    try {
+      // Dapatkan folder unduhan
+      Directory? dir;
+      if (Platform.isAndroid) {
+        dir = Directory(
+            '/storage/emulated/0/Download'); // Folder Downloads Android
+      } else {
+        dir = await getApplicationDocumentsDirectory(); // Folder dokumen di iOS
+      }
+
+      if (!dir.existsSync()) {
+        dir.createSync(recursive: true); // Buat folder jika belum ada
+      }
+
+      String fileName = url.split('/').last;
+      String savePath = '${dir.path}/$fileName';
+
+      // Download file dengan Dio
+      await dio.download(
+        url,
+        savePath,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            print(
+                'Downloading: ${(received / total * 100).toStringAsFixed(0)}%');
+          }
+        },
+      );
+
+      // Beri tahu pengguna
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Download selesai: $savePath')),
+      );
+
+      // Buka file setelah diunduh
+      OpenFile.open(savePath);
+    } catch (e) {
+      print('Error saat mengunduh: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal mengunduh file')),
+      );
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.kedirikota.pecut.app-mergeDebugResources-40:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.kedirikota.pecut.app-mergeDebugResources-42:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "D:\\Semester 6\\Dart\\02\\android\\app\\src\\main\\res\\values-night\\styles.xml",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Shaunan\\.gradle\\caches\\8.9\\transforms\\30741810f37ff025bb898b64f8ae094b\\transformed\\appcompat-1.1.0\\res\\values-night-v8\\values-night-v8.xml",
+                    "source": "C:\\Users\\Shaunan\\.gradle\\caches\\8.9\\transforms\\430960d7d0187a7990dd38ee6ed254aa\\transformed\\appcompat-1.6.1\\res\\values-night-v8\\values-night-v8.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

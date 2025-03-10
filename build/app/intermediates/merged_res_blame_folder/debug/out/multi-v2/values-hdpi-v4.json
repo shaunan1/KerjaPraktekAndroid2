@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.kedirikota.pecut.app-mergeDebugResources-40:/values-hdpi-v4/values-hdpi-v4.xml",
+            "outputFile": "com.kedirikota.pecut.app-mergeDebugResources-42:/values-hdpi-v4/values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Shaunan\\.gradle\\caches\\8.9\\transforms\\30741810f37ff025bb898b64f8ae094b\\transformed\\appcompat-1.1.0\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "source": "C:\\Users\\Shaunan\\.gradle\\caches\\8.9\\transforms\\430960d7d0187a7990dd38ee6ed254aa\\transformed\\appcompat-1.6.1\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
